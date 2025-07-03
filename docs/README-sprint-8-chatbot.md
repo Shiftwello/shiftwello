@@ -1,95 +1,101 @@
-# Moodio Pro 🧠✨
 
-Moodio Pro is a platform designed for therapists to manage patients, clinical sessions, and their own professional profile with clarity, security, and a clean interface. Built using React, Node.js, Express, and MySQL.
+# 🚀 Sprint 8 - Internal AI Chatbot for Shiftwello
 
----
+This sprint implements an **internal AI-based chatbot**, fully integrated into Shiftwello, designed to assist both **hotel staff and managers**, improving access to operational information, internal policies, and reinforcing team wellbeing.
 
-## 🚀 What's New in `mejoras-v2` Branch
-
-### 🖥️ UI & Design
-- Modern, clean, and fully responsive design.
-- Professional look across all pages.
-- Patient photo now appears as a thumbnail next to their name.
-- Optimized for both large and small screens.
-- Clearly separated action buttons (professional layout).
-- "Moodio Pro" logo redirects correctly depending on login status.
-
-### 🔐 Navigation & Authentication
-- Navbar hides "Login" and "Register" when the user is logged in.
-- Shows authenticated links: Dashboard, Profile, Patients, etc.
-- "Logout" button only visible when session is active.
-
-### 👩‍⚕️ Patient Management
-- Enhanced patient detail view with:
-  - Responsive profile image.
-  - Toggleable editing mode.
-  - Cancel button restores previous values.
-- Image URL field hidden when not editing.
-- Each patient card includes a thumbnail and their full name.
-- Modular CSS files for each page.
-
-### 📝 Clinical Sessions
-- Each session displayed in a separate, styled block with:
-  - Full date and time display.
-  - “Read more” button for long notes.
-  - Secure edit mode.
-  - Confirm before deleting.
-- Improved session creation form with professional textarea.
-
-### 🧑‍⚕️ Therapist Dashboard
-- Profile card with avatar, email, specialty, and bio.
-- List of patients with thumbnails and direct view buttons.
-- New button to add a patient directly from the dashboard.
-
-### 📁 Structure & Environment
-- Separate `.env.development` and `.env.production` files.
-- Seamless switching between local and production environments.
-- Protected backend using custom JWT middleware.
-- Organized folder structure: `pages`, `components`, `styles`, `services`.
+✅ This radically differentiates Shiftwello from traditional shift management systems, positioning it as **a true people operations platform powered by AI**.
 
 ---
 
-## 🛠️ Tech Stack
-
-- **Frontend:** React, React Router, CSS Modules, Vite
-- **Backend:** Node.js, Express
-- **Database:** MySQL + Sequelize ORM
-- **Authentication:** JWT + Custom Middleware
-- **Current Deploy:** Railway (backend & DB), Vercel (frontend)
+## 🎯 Main functionalities
+- ✅ **Dynamic FAQs**: the bot answers questions about overtime, vacations, internal policies, etc.
+- ✅ **Shift queries**: staff can ask, “What shift do I have tomorrow?”
+- ✅ **Alerts & recognitions**: congratulates on days without absences, badges, or suggests rest if it detects potential burnout.
+- ✅ **Manager assistant**: e.g., “How was the team’s mood this week?”
+- ✅ **Central manual & links**: bot provides quick access to PDFs or internal hotel documents.
 
 ---
 
-## 📦 Getting Started Locally
+## ⚙️ Technical stack & architecture
+### Backend
+- **Node.js + Express**
+- New route: `POST /api/chatbot`
+- Access control via JWT
+- Microservice handling AI prompts (GPT-3.5-turbo or local open source model).
 
-```bash
-git clone https://github.com/matiascaparotta/Moodio-Pro.git
-cd Moodio-Pro
-git checkout mejoras-v2
+### Frontend
+- **React (PWA)**
+- `ChatbotWidget.jsx` floating component, visible across the dashboard.
+- Global context to maintain conversation state.
 
-# Frontend
-cd client
-npm install
-npm run dev
+### Security
+- JWT authentication to protect every request.
+- Logs of interactions (`chatbot_logs`) for full auditability.
 
-# Backend (in a new terminal)
-cd ../server
-npm install
-npm run dev
+---
+
+## 💡 Example prompt for the AI microservice
+```
+You are the internal assistant of Shiftwello, a software for managing hotel staff.
+Only respond to questions about shifts, wellbeing, hotel policies, or reports.
+
+If the question is unrelated, reply:
+"I'm sorry, I can only help with internal hotel topics."
+
+Examples:
+Q: What shift do I have tomorrow?
+A: Tomorrow you work from 2:00 PM to 10:00 PM at the Front Desk.
+
+Q: What should I do if I’m running late?
+A: Immediately notify your direct supervisor or the Duty Manager.
+
+Q: How is the overall team mood?
+A: This week, 78% of staff submitted positive check-ins 🙂
 ```
 
 ---
 
-## 💡 Future Improvements (Ideas)
-
-- Calendar view of sessions.
-- PDF export of session history.
-- Notifications and reminders.
-- User roles (therapist, patient).
-- Dashboard with statistics and analytics.
+## 📈 Direct benefits
+| Benefit                               | Impact                             |
+|---------------------------------------|------------------------------------|
+| Reduces repetitive questions to supervisors | Saves hours of operational time per month. |
+| Improves staff engagement             | More daily use of Shiftwello.      |
+| Justifies premium pricing             | Clearly differentiates from basic apps.|
 
 ---
 
-## ✨ Author
+## 📊 Chatbot flow diagram (Mermaid)
+```mermaid
+graph TD
+    A[User (staff or manager)] -->|asks question| B[ChatbotWidget (React)]
+    B -->|POST /api/chatbot| C[Backend API (Express)]
+    C -->|validates JWT & role| D[AIService (GPT/microservice)]
+    D -->|optional| E[DB (MySQL)]
+    D -->|generates response| C
+    C -->|sends JSON response| B
+    B -->|renders in UI| A
+```
 
-Developed with passion by **Matías Caparotta**.  
-[GitHub](https://github.com/matiascaparotta) | [LinkedIn](https://www.linkedin.com/in/matiascaparotta)
+---
+
+## 🚀 Business objectives
+- Position Shiftwello as the most advanced hotel people operations suite in the market, leveraging AI.
+- Directly save supervisor and manager time.
+- Improve staff satisfaction, reducing turnover and indirect costs.
+
+---
+
+## 📝 Next steps
+- [ ] Implement `POST /api/chatbot` endpoint in Express.
+- [ ] Connect AI microservice with hotel-specific prompt.
+- [ ] Create `ChatbotWidget.jsx` in the frontend.
+- [ ] Audit logs in `chatbot_logs` table.
+- [ ] Functional & UI tests.
+
+---
+
+✅ **Shiftwello** evolves into a fully integrated hotel platform that:
+- Automates shifts,
+- Predicts burnout,
+- Incentivizes with badges,
+- And now **supports the team with a 24/7 virtual assistant**.
