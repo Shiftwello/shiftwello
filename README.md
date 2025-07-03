@@ -22,7 +22,7 @@ Hotels with 150+ rooms and 24/7 operations face:
 - burnout due to irregular shifts and insufficient rest,
 - legal risks with labor laws on maximum hours and breaks.
 
-Managers spend **hours weekly** balancing shifts manually in Excel, reacting to sick leaves last minute, and trying to maintain team morale — at a high operational cost.
+Managers s˚pend **hours weekly** balancing shifts manually in Excel, reacting to sick leaves last minute, and trying to maintain team morale — at a high operational cost.
 
 ---
 
