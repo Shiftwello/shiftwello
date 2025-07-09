@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
+import db from "../config/db.js";
 
-export const protect = (req, res, next) => {
+export const protect = async (req, res, next) => {
   let token;
 
   if (
@@ -11,7 +12,14 @@ export const protect = (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = decoded; // ahora tenés id, username, role_id
+      // Buscar usuario en DB por id para verificar que exista y esté activo
+      const [rows] = await db.query("SELECT id, full_name, username, email, role_id FROM employees WHERE id = ? AND active = 1", [decoded.id]);
+
+      if (rows.length === 0) {
+        return res.status(401).json({ message: "Not authorized, user not found" });
+      }
+
+      req.user = rows[0];
       return next();
     } catch (err) {
       console.error("❌ Token verification failed:", err);

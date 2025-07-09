@@ -1,69 +1,76 @@
-# Shiftwello 🚀
+# Shiftwello
 
-**AI-driven scheduling & wellbeing platform for hotel teams**
+![Shiftwello Logo](./frontend/src/assets/images/logoShiftwello.png)
 
----
+## Description
 
-## 🌟 Vision
+Shiftwello is a platform designed to simplify hotel workforce management by automating scheduling, improving wellbeing, and ensuring labor law compliance.
 
-Shiftwello is an intelligent platform designed for medium to large hotels that transforms how teams are scheduled, boosts daily employee wellbeing, and maximizes financial returns. 
-
-It combines automatic fair shift generation, daily emotional check-ins, gamified incentives, and an AI module that predicts absenteeism and burnout **before they become costly problems.** 
-
-Beyond technology, Shiftwello aims to leave a meaningful footprint — creating healthier, more human workplaces that value people every single day.
+Currently, the project is in active development with user authentication, role-based access, and manual scheduling fully implemented.
 
 ---
 
-## 💡 The Problem
+## 🚀 Features Implemented So Far
 
-Hotels with 150+ rooms and 24/7 operations face:
-- complex rotational schedules across departments (front office, F&B, housekeeping),
-- high staff turnover and absenteeism,
-- burnout due to irregular shifts and insufficient rest,
-- legal risks with labor laws on maximum hours and breaks.
-
-Managers s˚pend **hours weekly** balancing shifts manually in Excel, reacting to sick leaves last minute, and trying to maintain team morale — at a high operational cost.
+- **Authentication & Authorization:** JWT-based login/signup with role-based access control.
+- **User Management:** Admin and supervisors can create and manage employees.
+- **Scheduling Module:** Managers can create, edit, and delete shifts with a calendar view.
+- **Roles & Permissions:** Differentiated access for managers, supervisors, and employees.
+- **Responsive Interface:** Modern UI designed for desktop and mobile.
 
 ---
 
-## 🚀 Our Solution
+## 🛠️ Technology Stack
 
-Shiftwello simplifies and elevates staff management by offering:
-✅ **Automatic fair scheduling** — based on rules, preferences & workload balancing.  
-✅ **Daily wellbeing check-ins** (🙂😐😞) to spot stress trends in real time.  
-✅ **Gamified incentives** for attendance & morale.  
-✅ **AI predictions** that forecast absenteeism and burnout risks.  
-✅ **Dashboards** that show savings in time, reduced turnover, and compliance.
+- **Backend:** Node.js, Express, MySQL, Sequelize ORM
+- **Frontend:** React, React Router, Tailwind CSS
+- **Authentication:** JWT with bcrypt password hashing
+- **Tools:** VSCode, Git, Postman
 
 ---
 
-## 🎯 Target Market
+## 🗂 Project Structure
 
-- **Hotels with 150+ rooms**, multi-department, 24/7 operations.  
-- Especially in cities with high staff turnover & strict labor regulations.  
-- Looking to save manager hours, protect staff health, and position themselves as responsible employers.
-
----
-
-## 🧑‍💻 Tech Stack
-
-- **Backend:** Node.js + Express + MySQL
-- **Frontend:** React (PWA ready)
-- **Future AI module:** Python microservice (TensorFlow / Scikit-learn)
-- **Hosting:** Railway / Vercel / PlanetScale
-- **Design:** Figma prototypes
+- `/backend` - Node.js API and database logic
+- `/frontend` - React application with routing and UI components
 
 ---
 
-## 📅 Roadmap
+## 📅 Roadmap & Next Steps
 
-See detailed sprints & milestones in [ROADMAP.md](./ROADMAP.md).
+- **Sprint 3:** Finalize manual scheduling module and employee shift views.
+- **Sprint 4:** Implement daily wellbeing check-ins & basic incentives.
+- **Sprint 5:** Add rule-based automatic scheduling features.
+- **Sprint 6:** Integrate simple AI predictive models for burnout and absenteeism risk.
+- **Sprint 7:** Build reporting and export features.
+- **Sprint 8:** Develop an AI chatbot assistant for managers and employees.
+
+---
+
+## 🤖 Upcoming Sprint 8: Chatbot Assistant
+
+The chatbot will provide:
+
+- Quick answers to scheduling questions.
+- Help with shift swaps and availability updates.
+- Wellbeing tips and notifications.
+- Integration with the scheduling backend to offer personalized assistance.
 
 ---
 
-## 🤝 License
+## 🚀 How to Run Locally
 
-MIT License — open for personal experimentation and pilots.  
-Contact us for commercial deployments & partnership opportunities.
+```bash
+# Clone the repository
+git clone https://github.com/Shiftwello/shiftwello.git
+cd shiftwello
 
----
+# Backend
+cd backend
+npm install
+npm run dev
+
+# Frontend (in another terminal)
+cd ../frontend
+npm install
+npm start

@@ -37,3 +37,29 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const register = async (req, res) => {
+  const { full_name, username, email, password } = req.body;
+
+  try {
+    if (!full_name || !username || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Aquí podrías agregar validaciones adicionales como verificar si username o email ya existen
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const sql = `
+      INSERT INTO employees (full_name, username, email, password, role_id)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    const [result] = await db.query(sql, [full_name, username, email, hashedPassword, 3]);
+
+    res.status(201).json({ message: "User registered successfully" });
+  } catch (err) {
+    console.error("❌ Error in register:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

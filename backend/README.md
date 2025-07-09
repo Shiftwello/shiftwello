@@ -58,6 +58,8 @@ http://localhost:5001
 | 🔜 Sprint 4 | Wellbeing daily check-ins, attendance leaderboard |
 | 🔜 Sprint 5 | Automatic smart scheduling (rule-based) |
 | 🔜 Sprint 6 | Predictive AI burnout risk & suggestions |
+| 🔜 Sprint 7 | Incentive + PDF HR reports
++ ROI dashboard|
 
 ---
 
