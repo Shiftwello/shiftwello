@@ -6,7 +6,13 @@ export const login = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const [rows] = await db.query("SELECT * FROM employees WHERE username = ?", [username]);
+    const [rows] = await db.query(`
+      SELECT e.*, r.hierarchy_level, d.id as department_id, d.name as department_name
+      FROM employees e
+      JOIN roles r ON e.role_id = r.id
+      LEFT JOIN departments d ON e.department_id = d.id
+      WHERE e.username = ?
+    `, [username]);
 
     if (rows.length === 0) {
       return res.status(401).json({ message: "Invalid username or password" });
@@ -29,7 +35,10 @@ export const login = async (req, res) => {
         full_name: user.full_name,
         username: user.username,
         email: user.email,
-        role_id: user.role_id
+        role_id: user.role_id,
+        hierarchy_level: user.hierarchy_level,
+        department_id: user.department_id,
+        department_name: user.department_name,
       }
     });
   } catch (err) {
@@ -45,8 +54,6 @@ export const register = async (req, res) => {
     if (!full_name || !username || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
-
-    // Aquí podrías agregar validaciones adicionales como verificar si username o email ya existen
 
     const hashedPassword = await bcrypt.hash(password, 10);
 

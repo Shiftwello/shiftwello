@@ -5,6 +5,7 @@ import db from "./config/db.js";
 import employeeRoutes from "./routes/employeeRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import shiftRoutes from "./routes/shiftRoutes.js";
+import departmentRoutes from "./routes/departmentRoutes.js"; // <-- Importa rutas departamentos
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 app.use("/api/employees", employeeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/shifts", shiftRoutes);
+app.use("/api/departments", departmentRoutes); // <-- Monta rutas departamentos
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

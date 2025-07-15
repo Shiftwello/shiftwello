@@ -21,7 +21,8 @@ export default function DashboardPage() {
       <h1 className="text-4xl font-bold mb-6">Welcome to Shiftwello</h1>
       <h2 className="text-2xl mb-4">Hello, {user?.full_name || "Unknown User"}!</h2>
       <p className="mb-2"><strong>Email:</strong> {user?.email}</p>
-      <p className="mb-6"><strong>Role ID:</strong> {user?.role_id}</p>
+      <p className="mb-2"><strong>Role ID:</strong> {user?.role_id}</p>
+      <p className="mb-6"><strong>Department:</strong> {user?.department_name || "No department assigned"}</p>
 
       <button
         onClick={handleLogout}

@@ -1,21 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function ManagerCreateUserPage() {
-  const token = localStorage.getItem("token"); // <-- Aquí obtenemos el token directamente
+  const token = localStorage.getItem("token");
+
+  const [departments, setDepartments] = useState([]);
+
   const [formData, setFormData] = useState({
     full_name: "",
     username: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    department_id: "", // <-- Nuevo campo para departamento
   });
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  useEffect(() => {
+    const loadDepartments = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/departments`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error("Error cargando departamentos");
+        const data = await res.json();
+        setDepartments(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (token) loadDepartments();
+  }, [token]);
+
   const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
@@ -23,7 +44,14 @@ export default function ManagerCreateUserPage() {
     setError("");
     setSuccess("");
 
-    if (!formData.full_name || !formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (
+      !formData.full_name ||
+      !formData.username ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword ||
+      !formData.department_id
+    ) {
       setError("Please fill all fields");
       return;
     }
@@ -32,21 +60,20 @@ export default function ManagerCreateUserPage() {
       return;
     }
 
-    console.log("Token enviado:", token); // <-- Log para verificar el token
-
     try {
       const res = await fetch(`${API_URL}/api/employees`, {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           full_name: formData.full_name,
           username: formData.username,
           email: formData.email,
           password: formData.password,
-          role_id: 3 // empleado normal
+          role_id: 3, // empleado normal
+          department_id: formData.department_id,
         }),
       });
 
@@ -62,7 +89,8 @@ export default function ManagerCreateUserPage() {
         username: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        department_id: "",
       });
     } catch (err) {
       setError("Network error");
@@ -85,7 +113,6 @@ export default function ManagerCreateUserPage() {
           <div className="bg-green-100 text-green-700 p-2 mb-4 rounded">{success}</div>
         )}
 
-        {/* Campos idénticos a SignupPage */}
         <label className="block mb-2 font-semibold" htmlFor="full_name">
           Full Name
         </label>
@@ -145,6 +172,25 @@ export default function ManagerCreateUserPage() {
           onChange={handleChange}
           className="w-full border border-gray-300 rounded px-3 py-2 mb-6 focus:outline-indigo-500"
         />
+
+        <label className="block mb-2 font-semibold" htmlFor="department_id">
+          Department
+        </label>
+        <select
+          name="department_id"
+          id="department_id"
+          value={formData.department_id}
+          onChange={handleChange}
+          required
+          className="w-full border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-indigo-500"
+        >
+          <option value="">Select department</option>
+          {departments.map((dep) => (
+            <option key={dep.id} value={dep.id}>
+              {dep.name}
+            </option>
+          ))}
+        </select>
 
         <button
           type="submit"

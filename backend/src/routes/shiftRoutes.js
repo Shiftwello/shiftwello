@@ -7,16 +7,16 @@ import {
   deleteShiftById
 } from "../controllers/ShiftController.js";
 
-import { protect } from "../middleware/protect.js";
-import { checkRole } from "../middleware/checkRole.js";
+import { protect } from "../middleware/protect.js";      // middleware que verifica token y añade req.user
+import { checkRole } from "../middleware/checkRole.js";  // middleware que verifica rol
 
 const router = express.Router();
 
-// Solo usuarios autenticados pueden ver la lista y detalles
-router.get("/", protect, listShifts);
+// Rutas públicas protegidas (necesitan token)
+router.get("/", protect, listShifts);    // Cualquiera autenticado puede listar (filtrado por backend)
 router.get("/:id", protect, getShift);
 
-// Solo managers (rol_id 1) y supervisors (rol_id 2) pueden crear, editar y eliminar turnos
+// Solo managers y supervisores (roles 1, 2) pueden crear, modificar o eliminar turnos
 router.post("/", protect, checkRole([1, 2]), addShift);
 router.put("/:id", protect, checkRole([1, 2]), updateShiftById);
 router.delete("/:id", protect, checkRole([1, 2]), deleteShiftById);

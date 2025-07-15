@@ -1,20 +1,25 @@
 import express from "express";
-import { addEmployee, listEmployees, getEmployeeById, updateEmployee } from "../controllers/EmployeeController.js";
-import { protect } from "../middleware/protect.js";
-import { checkRole } from "../middleware/checkRole.js";
+import {
+  addEmployee,
+  listEmployees,
+  getEmployeeById,
+  updateEmployee,
+} from "../controllers/EmployeeController.js";
+
+import { verifyToken, authorizeRoles } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Crear empleado: solo managers (1) y supervisores (2)
-router.post("/", protect, checkRole([1, 2]), addEmployee);
+// Listar empleados (opcional filtro por departamento: /api/employees?department_id=2)
+router.get("/", verifyToken, listEmployees);
 
-// Listar empleados: cualquier usuario autenticado
-router.get("/", protect, listEmployees);
+// Crear empleado (solo admins y managers, por ejemplo roles 1 y 2)
+router.post("/", verifyToken, authorizeRoles(1, 2), addEmployee);
 
-// Ver empleado por id: cualquier usuario autenticado
-router.get("/:id", protect, getEmployeeById);
+// Obtener empleado por ID
+router.get("/:id", verifyToken, getEmployeeById);
 
-// Actualizar empleado: solo managers y supervisores
-router.put("/:id", protect, checkRole([1, 2]), updateEmployee);
+// Actualizar empleado (solo admins y managers)
+router.put("/:id", verifyToken, authorizeRoles(1, 2), updateEmployee);
 
 export default router;

@@ -24,7 +24,11 @@ function getHeaderTitle(view, date) {
 }
 
 export default function SchedulePage() {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
+
+  // Solo Managers y Supervisores pueden crear/editar turnos
+  const canEditShifts = user && [1, 2].includes(user.role_id);
+
   const [events, setEvents] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -64,9 +68,14 @@ export default function SchedulePage() {
   };
 
   const loadEmployees = async () => {
-    if (!token) return;
+    if (!token || !user) return;
+
+    // Construir URL con o sin filtro de departamento
+    const baseUrl = "http://localhost:5001/api/employees";
+    const url = user.department_id ? `${baseUrl}?department_id=${user.department_id}` : baseUrl;
+
     try {
-      const res = await fetch("http://localhost:5001/api/employees", {
+      const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Error cargando empleados");
@@ -80,9 +89,11 @@ export default function SchedulePage() {
   useEffect(() => {
     loadEvents();
     loadEmployees();
-  }, [token]);
+  }, [token, user]);
 
   const onSelectEvent = (event) => {
+    if (!canEditShifts) return; // No abrir modal si no tiene permiso
+
     setSelectedEvent(event);
     setFormData({
       employee_id: event.employee_id,
@@ -95,6 +106,8 @@ export default function SchedulePage() {
   };
 
   const openNewShiftModal = () => {
+    if (!canEditShifts) return; // No permitir crear si no tiene permiso
+
     setSelectedEvent(null);
     setFormData({
       employee_id: "",
@@ -152,14 +165,15 @@ export default function SchedulePage() {
   return (
     <div className="p-4 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-center">Calendario de Turnos</h1>
-      <p className="text-center mb-6">Gestiona los turnos de los empleados aquí.</p>
-
-      <button
-        onClick={openNewShiftModal}
-        className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-      >
-        Crear nuevo turno
-      </button>
+     
+      {canEditShifts && (
+        <button
+          onClick={openNewShiftModal}
+          className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Crear nuevo turno
+        </button>
+      )}
 
       {/* Título dinámico del calendario */}
       <div className="mb-4 text-center font-semibold text-lg">
@@ -179,7 +193,7 @@ export default function SchedulePage() {
         views={[Views.MONTH, Views.WEEK, Views.DAY]}
         onSelectEvent={onSelectEvent}
         components={{
-          toolbar: undefined // esto elimina la toolbar default si quieres ocultar
+          toolbar: undefined // para ocultar toolbar nativa si quieres
         }}
       />
 

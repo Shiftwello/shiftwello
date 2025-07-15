@@ -13,6 +13,7 @@ export default function Navbar() {
     navigate("/login");
   };
 
+  // Puedes ajustar esta condición según tu lógica con hierarchy_level
   const isManagerOrSupervisor = user?.role_id === 1 || user?.role_id === 2;
 
   return (
@@ -35,7 +36,9 @@ export default function Navbar() {
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  isActive ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
+                  isActive
+                    ? "text-blue-600 font-semibold"
+                    : "text-gray-700 hover:text-blue-600"
                 }
               >
                 Home
@@ -46,7 +49,9 @@ export default function Navbar() {
                 <NavLink
                   to="/dashboard"
                   className={({ isActive }) =>
-                    isActive ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
+                    isActive
+                      ? "text-blue-600 font-semibold"
+                      : "text-gray-700 hover:text-blue-600"
                   }
                 >
                   Dashboard
@@ -54,7 +59,9 @@ export default function Navbar() {
                 <NavLink
                   to="/schedule"
                   className={({ isActive }) =>
-                    isActive ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
+                    isActive
+                      ? "text-blue-600 font-semibold"
+                      : "text-gray-700 hover:text-blue-600"
                   }
                 >
                   Schedule
@@ -63,7 +70,9 @@ export default function Navbar() {
                   <NavLink
                     to="/manager/users/new"
                     className={({ isActive }) =>
-                      isActive ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
+                      isActive
+                        ? "text-blue-600 font-semibold"
+                        : "text-gray-700 hover:text-blue-600"
                     }
                   >
                     Crear Usuarios
@@ -84,13 +93,20 @@ export default function Navbar() {
               >
                 <span className="text-gray-700 font-medium">{user.full_name}</span>
                 <svg
-                  className={`w-4 h-4 transform transition-transform ${menuOpen ? "rotate-180" : "rotate-0"}`}
+                  className={`w-4 h-4 transform transition-transform ${
+                    menuOpen ? "rotate-180" : "rotate-0"
+                  }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {menuOpen && (
@@ -130,7 +146,12 @@ export default function Navbar() {
                   stroke="currentColor"
                   aria-hidden="true"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               ) : (
                 <svg
@@ -141,7 +162,12 @@ export default function Navbar() {
                   stroke="currentColor"
                   aria-hidden="true"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               )}
             </button>

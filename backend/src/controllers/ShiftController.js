@@ -1,6 +1,8 @@
 import {
   createShift,
   getAllShifts,
+  getShiftsByDepartmentId,
+  getShiftsByEmployeeId,
   getShiftById,
   updateShift,
   deleteShift
@@ -19,10 +21,27 @@ export const addShift = async (req, res) => {
 
 export const listShifts = async (req, res) => {
   try {
-    const shifts = await getAllShifts();
+    let shifts;
+
+    const userRole = req.user.role_id;
+    const userDepartment = req.user.department_id;
+
+    // Roles con acceso total (ajusta según necesidad)
+    const rolesWithFullAccess = [1]; // rol 1: admin global
+
+    if (rolesWithFullAccess.includes(userRole)) {
+      // Ver todos los turnos
+      shifts = await getAllShifts();
+    } else if ([2, 3].includes(userRole)) {
+      // Managers o Supervisores ven turnos de su departamento
+      shifts = await getShiftsByDepartmentId(userDepartment);
+    } else {
+      // Empleados solo sus propios turnos
+      shifts = await getShiftsByEmployeeId(req.user.id);
+    }
 
     if (!Array.isArray(shifts)) {
-      return res.json([]);  // Evita que frontend falle si no es array
+      return res.json([]);
     }
 
     res.json(shifts);

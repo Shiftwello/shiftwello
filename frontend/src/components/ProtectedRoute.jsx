@@ -5,8 +5,8 @@ export default function ProtectedRoute({ children }) {
   const { user } = useAuth();
 
   if (!user) {
-    // Si no hay usuario logueado, redirige a home ("/")
-    return <Navigate to="/" replace />;
+    // Si no hay usuario logueado, redirige a la página de login
+    return <Navigate to="/login" replace />;
   }
 
   // Usuario autenticado, permite acceder a la ruta protegida

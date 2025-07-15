@@ -5,9 +5,11 @@ export const generateToken = (user) => {
     {
       id: user.id,
       username: user.username,
-      role_id: user.role_id
+      role_id: user.role_id,
+      // Agregamos hierarchy_level aquí
+      hierarchy_level: user.hierarchy_level
     },
     process.env.JWT_SECRET,
-    { expiresIn: "7d" }
+    { expiresIn: "1d" }
   );
 };

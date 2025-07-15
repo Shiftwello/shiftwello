@@ -13,14 +13,15 @@ export const AuthProvider = ({ children }) => {
 
     if (storedToken && userData) {
       setToken(storedToken);
-      setUser(JSON.parse(userData));
+      setUser(JSON.parse(userData)); // aquí el userData debe tener hierarchy_level
     }
     setLoading(false);
   }, []);
 
+  // Al hacer login guarda toda la info de user incluyendo hierarchy_level
   const login = (userData, token) => {
     localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData)); // userData con hierarchy_level
     setToken(token);
     setUser(userData);
   };
